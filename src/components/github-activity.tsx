@@ -24,11 +24,62 @@ export function GitHubActivity() {
   React.useEffect(() => {
     const fetchGitHubData = async () => {
       try {
-        // Fetch contribution data from GitHub API
-        const response = await fetch('https://api.github.com/users/aksh-agrawal')
-        const userData = await response.json()
+        // Fetch user data and repositories from GitHub API
+        const [userResponse, reposResponse] = await Promise.all([
+          fetch('https://api.github.com/users/aksh-agrawal'),
+          fetch('https://api.github.com/users/aksh-agrawal/repos?sort=updated&per_page=100')
+        ])
         
-        // Generate realistic contribution data based on user activity
+        const userData = await userResponse.json()
+        const reposData = await reposResponse.json()
+        
+        // Calculate real statistics
+        const totalRepos = userData.public_repos || 0
+        const totalStars = reposData.reduce((sum: number, repo: any) => sum + (repo.stargazers_count || 0), 0)
+        const totalForks = reposData.reduce((sum: number, repo: any) => sum + (repo.forks_count || 0), 0)
+        
+        // Get recent activity from recent repositories
+        const recentActivity = reposData.slice(0, 3).map((repo: any) => {
+          const updatedAt = new Date(repo.updated_at)
+          const now = new Date()
+          const diffTime = Math.abs(now.getTime() - updatedAt.getTime())
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+          
+          let timeAgo = ''
+          if (diffDays === 1) timeAgo = '1 day ago'
+          else if (diffDays < 7) timeAgo = `${diffDays} days ago`
+          else if (diffDays < 30) timeAgo = `${Math.ceil(diffDays / 7)} week${Math.ceil(diffDays / 7) > 1 ? 's' : ''} ago`
+          else timeAgo = `${Math.ceil(diffDays / 30)} month${Math.ceil(diffDays / 30) > 1 ? 's' : ''} ago`
+          
+          return `${repo.name} - Updated ${timeAgo}`
+        })
+        
+        // Calculate language usage from repositories
+        const languageStats: { [key: string]: number } = {}
+        reposData.forEach((repo: any) => {
+          if (repo.language) {
+            languageStats[repo.language] = (languageStats[repo.language] || 0) + 1
+          }
+        })
+        
+        const totalLanguageRepos = Object.values(languageStats).reduce((sum: number, count: number) => sum + count, 0)
+        const topLanguages = Object.entries(languageStats)
+          .sort(([,a], [,b]) => b - a)
+          .slice(0, 4)
+          .map(([lang, count]) => ({
+            name: lang,
+            percentage: Math.round((count / totalLanguageRepos) * 100)
+          }))
+        
+        // Add "Other" if we have more than 3 languages
+        if (Object.keys(languageStats).length > 3) {
+          const otherPercentage = 100 - topLanguages.reduce((sum, lang) => sum + lang.percentage, 0)
+          if (otherPercentage > 0) {
+            topLanguages.push({ name: 'Other', percentage: otherPercentage })
+          }
+        }
+        
+        // Generate realistic contribution data (since GitHub's contribution API requires authentication)
         const contributions = generateRealisticContributions()
         const totalContributions = contributions.reduce((total, month) => 
           total + month.weeks.reduce((weekTotal, week) => 
@@ -44,56 +95,32 @@ export function GitHubActivity() {
           contributions,
           totalContributions,
           activeDays,
-          repositories: userData.public_repos || 24,
-          recentActivity: [
-            "AI Chat Assistant - Updated 2 days ago",
-            "Object Detection System - Updated 1 week ago", 
-            "Data Visualization Dashboard - Updated 2 weeks ago"
-          ],
-          topLanguages: [
+          repositories: totalRepos,
+          recentActivity,
+          topLanguages: topLanguages.length > 0 ? topLanguages : [
             { name: 'Python', percentage: 45 },
             { name: 'JavaScript', percentage: 30 },
             { name: 'TypeScript', percentage: 15 },
             { name: 'Other', percentage: 10 }
           ],
           stats: [
-            { label: 'Commits', value: '1,247', icon: '📝' },
-            { label: 'Pull Requests', value: '89', icon: '🔀' },
-            { label: 'Issues', value: '156', icon: '🐛' },
-            { label: 'Stars Earned', value: '324', icon: '⭐' }
+            { label: 'Repositories', value: totalRepos.toString(), icon: '📁' },
+            { label: 'Stars Earned', value: totalStars.toString(), icon: '⭐' },
+            { label: 'Forks', value: totalForks.toString(), icon: '🔀' },
+            { label: 'Followers', value: userData.followers?.toString() || '0', icon: '👥' }
           ]
         })
       } catch (error) {
         console.error('Error fetching GitHub data:', error)
-        // Fallback to mock data
-        const contributions = generateRealisticContributions()
-        const totalContributions = contributions.reduce((total, month) => 
-          total + month.weeks.reduce((weekTotal, week) => 
-            weekTotal + week.reduce((dayTotal, day) => dayTotal + day.count, 0), 0), 0
-        )
-        
+        // Minimal fallback - just show loading error
         setGitHubData({
-          contributions,
-          totalContributions,
-          activeDays: 298,
-          repositories: 24,
-          recentActivity: [
-            "AI Chat Assistant - Updated 2 days ago",
-            "Object Detection System - Updated 1 week ago",
-            "Data Visualization Dashboard - Updated 2 weeks ago"
-          ],
-          topLanguages: [
-            { name: 'Python', percentage: 45 },
-            { name: 'JavaScript', percentage: 30 },
-            { name: 'TypeScript', percentage: 15 },
-            { name: 'Other', percentage: 10 }
-          ],
-          stats: [
-            { label: 'Commits', value: '1,247', icon: '📝' },
-            { label: 'Pull Requests', value: '89', icon: '🔀' },
-            { label: 'Issues', value: '156', icon: '🐛' },
-            { label: 'Stars Earned', value: '324', icon: '⭐' }
-          ]
+          contributions: [],
+          totalContributions: 0,
+          activeDays: 0,
+          repositories: 0,
+          recentActivity: [],
+          topLanguages: [],
+          stats: []
         })
       } finally {
         setLoading(false)
@@ -156,7 +183,33 @@ export function GitHubActivity() {
     )
   }
 
-  if (!githubData) return null
+  if (!githubData || githubData.repositories === 0) {
+    return (
+      <section id="github-activity" className="py-20 px-4 bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="text-center">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 flex items-center justify-center gap-3">
+              <Github className="h-10 w-10 text-primary" />
+              GitHub Activity
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+              Unable to load GitHub data. Please check if the username "aksh-agrawal" exists and is public.
+            </p>
+            <motion.a
+              href="https://github.com/aksh-agrawal"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+              whileHover={{ scale: 1.05 }}
+            >
+              <ExternalLink className="h-4 w-4" />
+              View on GitHub
+            </motion.a>
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   const getIntensityColor = (intensity: number) => {
     const colors = [
