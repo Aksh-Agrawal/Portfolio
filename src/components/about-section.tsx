@@ -148,6 +148,11 @@ export function AboutSection() {
     <section
       id="about"
       className="py-20 px-4 bg-gradient-to-br from-background to-muted/20"
+      style={{
+        overflow: "visible",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+      }}
     >
       <div className="container mx-auto max-w-6xl">
         <motion.div
@@ -155,7 +160,12 @@ export function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-16 no-scrollbar"
+          style={{
+            overflow: "visible",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          }}
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">About Me</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
