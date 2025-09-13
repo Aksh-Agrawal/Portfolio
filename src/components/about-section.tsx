@@ -31,10 +31,9 @@ export function AboutSection() {
     "React",
     "Next.js",
     "Machine Learning",
-    "Open CV",
+    "OpenCV",
     "C++",
     "C",
-    "JavaScript",
     "HTML",
     "CSS",
     "R",
@@ -43,6 +42,47 @@ export function AboutSection() {
     "Git",
     "Vibe Coding",
   ];
+
+  // Skill logo mapping
+  const skillLogos: Record<string, React.ReactNode> = {
+    Python: <span className="mr-1">🐍</span>,
+    JavaScript: <span className="mr-1">🟨</span>,
+    TypeScript: <span className="mr-1">🔷</span>,
+    React: (
+      <svg className="inline mr-1" width="16" height="16" viewBox="0 0 32 32">
+        <circle cx="16" cy="16" r="2.5" fill="#61dafb" />
+        <g stroke="#61dafb" strokeWidth="2" fill="none">
+          <ellipse rx="14" ry="6" cx="16" cy="16" />
+          <ellipse
+            rx="14"
+            ry="6"
+            cx="16"
+            cy="16"
+            transform="rotate(60 16 16)"
+          />
+          <ellipse
+            rx="14"
+            ry="6"
+            cx="16"
+            cy="16"
+            transform="rotate(120 16 16)"
+          />
+        </g>
+      </svg>
+    ),
+    "Next.js": <span className="mr-1">⏭️</span>,
+    "Machine Learning": <Brain className="inline h-4 w-4 mr-1 text-primary" />,
+    OpenCV: <span className="mr-1">👁️</span>,
+    "C++": <span className="mr-1">💻</span>,
+    C: <span className="mr-1">🖥️</span>,
+    HTML: <span className="mr-1">📄</span>,
+    CSS: <span className="mr-1">🎨</span>,
+    R: <span className="mr-1">📊</span>,
+    "Computer Vision": <span className="mr-1">👓</span>,
+    "Data Analysis": <span className="mr-1">📈</span>,
+    Git: <GitBranch className="inline h-4 w-4 mr-1 text-primary" />,
+    "Vibe Coding": <Star className="inline h-4 w-4 mr-1 text-primary" />,
+  };
 
   const timeline = [
     {
@@ -354,8 +394,11 @@ export function AboutSection() {
                   >
                     <Badge
                       variant="outline"
-                      className="hover:bg-primary hover:text-primary-foreground transition-colors cursor-default"
+                      className="flex items-center gap-1 hover:bg-primary hover:text-primary-foreground transition-colors cursor-default"
                     >
+                      {skillLogos[skill] || (
+                        <Star className="inline h-4 w-4 mr-1 text-primary" />
+                      )}{" "}
                       {skill}
                     </Badge>
                   </motion.div>
