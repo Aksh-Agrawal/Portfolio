@@ -56,7 +56,7 @@ export function ResumeSection() {
         achievements: [
           "Active member of AI/ML Research Club",
           "Organized multiple tech events and hackathons",
-          "Created a python Wrapper"
+          "Created a python Wrapper",
         ],
       },
     ],
@@ -167,20 +167,17 @@ export function ResumeSection() {
       },
     ],
     skills: {
-      programming: ["Python", "JavaScript", "TypeScript", "Java", "C++", "C","R",],
-      frameworks: [
-        "React",
-        "Next.js",
-        "ShanCN"
+      programming: [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "C++",
+        "C",
+        "R",
       ],
-      ai_ml: [
-       
-       
-        "Scikit-learn",
-        "OpenCV",
-        "Numpy",
-        "Pandas",
-      ],
+      frameworks: ["React", "Next.js", "ShanCN"],
+      ai_ml: ["Scikit-learn", "OpenCV", "Numpy", "Pandas"],
       tools: ["Git", "Docker"],
       soft: [
         "Leadership",
@@ -311,9 +308,9 @@ export function ResumeSection() {
   return (
     <section
       id="resume"
-      className="py-20 bg-gradient-to-br from-background via-background to-primary/5"
+      className="py-20 bg-gradient-to-br from-background via-background to-primary/5 overflow-x-hidden"
     >
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-4 sm:px-6 max-w-full">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -366,14 +363,14 @@ export function ResumeSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4"
             onClick={closePreviewModal}
           >
             <motion.div
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.9 }}
-              className="bg-background rounded-lg shadow-2xl max-w-4xl w-full h-[80vh] overflow-hidden"
+              className="bg-background rounded-lg shadow-2xl w-full max-w-full sm:max-w-3xl h-[80vh] overflow-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between p-4 border-b">
@@ -410,7 +407,7 @@ export function ResumeSection() {
           </motion.div>
         )}
 
-        <div className="max-w-6xl mx-auto">
+        <div className="w-full max-w-full mx-auto">
           {/* Personal Information */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -639,7 +636,7 @@ export function ResumeSection() {
           */}
 
           {/* Projects */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -720,7 +717,7 @@ export function ResumeSection() {
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+          </motion.div> */}
 
           {/* Hackathons */}
           {/* <motion.div

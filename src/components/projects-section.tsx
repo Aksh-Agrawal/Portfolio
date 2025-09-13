@@ -9,43 +9,76 @@ import { ExternalLink, Github, Code } from "lucide-react"
 
 export function ProjectsSection() {
   const projects = [
-    {
-      title: "AI-Powered Chat Assistant",
-      description: "An intelligent chatbot built with OpenAI API, featuring natural language processing and context-aware responses.",
-      technologies: ["Python", "OpenAI API", "React", "FastAPI", "PostgreSQL"],
-      features: ["Natural Language Processing", "Context Awareness", "Real-time Chat", "User Analytics"],
-      github: "https://github.com/akshagrawal/ai-chat-assistant",
-      demo: "https://ai-chat-demo.vercel.app",
-      status: "Completed"
-    },
-    {
-      title: "Computer Vision Object Detector",
-      description: "Real-time object detection system using YOLO and TensorFlow, capable of identifying and tracking multiple objects.",
-      technologies: ["Python", "TensorFlow", "OpenCV", "YOLO", "Flask"],
-      features: ["Real-time Detection", "Multi-object Tracking", "Web Interface", "API Integration"],
-      github: "https://github.com/akshagrawal/object-detector",
-      demo: "https://object-detector-demo.vercel.app",
-      status: "In Progress"
-    },
-    {
-      title: "Interactive Data Visualization Dashboard",
-      description: "A comprehensive dashboard for data analysis with interactive charts, real-time updates, and machine learning insights.",
-      technologies: ["React", "D3.js", "Python", "Pandas", "Scikit-learn"],
-      features: ["Interactive Charts", "Real-time Updates", "ML Insights", "Export Functionality"],
-      github: "https://github.com/akshagrawal/data-dashboard",
-      demo: "https://data-dashboard-demo.vercel.app",
-      status: "Completed"
-    },
-    {
-      title: "Smart Home Automation System",
-      description: "IoT-based home automation system with AI-powered energy optimization and voice control integration.",
-      technologies: ["Python", "Arduino", "MQTT", "TensorFlow", "React Native"],
-      features: ["Voice Control", "Energy Optimization", "Mobile App", "IoT Integration"],
-      github: "https://github.com/akshagrawal/smart-home",
-      demo: "https://smart-home-demo.vercel.app",
-      status: "Planning"
-    }
-  ]
+  {
+    title: "Smart Goggles for Blind People",
+    description: "A terminal-based assistive technology prototype featuring obstacle detection, face recognition, object identification, navigation assistance, OCR, and emergency SOS alerts.",
+    technologies: ["Python", "YOLO", "OpenCV", "Speech Recognition", "Text-to-Speech" , "Iot Integrartion", "Twilo"],
+    features: [
+      "Real-time Obstacle Detection",
+      "Known Person Recognition",
+      "Voice Command Interaction",
+      "Navigation Assistance (Google Maps) to be added",
+      "OCR-based Text Reading",
+      "Emergency SOS/Buzzer"
+    ],
+    github: "https://github.com/Aksh-Agrawal/smart_goggles_prototype", // adjust if repo exists
+    demo: "https://github.com/Aksh-Agrawal/smart_goggles_prototype", // placeholder
+    status: "In Progress"
+  },
+  {
+    title: "Event Report Generator",
+    description: "AI-powered LaTeX report generator that creates professional event reports from minimal input, supporting images, logos, and standardized templates.",
+    technologies: ["Streamlit", "LangChain", "Gemini API", "LaTeX", "Flask"],
+    features: [
+      "Dynamic LaTeX Report Generation",
+      "Image & Logo Integration",
+      "External PDF Compilation",
+      "Downloadable Reports"
+    ],
+    github: "https://github.com/aksh-agrawal/event-report-generator", // adjust
+    demo: "https://github.com/aksh-agrawal/event-report-generator", // placeholder
+    status: "Completed"
+  },
+  {
+    title: "Easy OpenCV Wrapper",
+    description: "A Python wrapper that simplifies working with OpenCV, making computer vision tasks like image processing, face detection, and object tracking easier for beginners and rapid prototyping.",
+    technologies: ["Python", "OpenCV"],
+    features: [
+      "Simplified OpenCV Functions",
+     
+      "Image & Video Processing",
+      "Face & Object Detection Utilities"
+    ],
+    github: "https://github.com/Aksh-Agrawal/easy-opencv-wrapper",
+    demo: "https://pypi.org/project/easy-opencv-wrapper/", // placeholder if published
+    status: "Completed"
+  },
+ {
+  title: "Unified Ranking System",
+  description: "A Python-based system that normalizes and ranks user data—competitive programming ratings, course completions, and activity participation—into a unified, configurable score.",
+  technologies: [
+    "Python",
+    "BeautifulSoup",
+    "Logging",
+    "Pandas",
+    "YAML/JSON"
+  ],
+  features: [
+    "Robust Data Normalization",
+    "Platform Rating Integration",
+    "Detailed Score Reports",
+    "Persistent Scoring Database",
+    "Batch & Real-Time Processing",
+    "CLI Interface"
+  ],
+  github: "https://github.com/Aksh-Agrawal/normalization_main",
+  demo: "https://github.com/Aksh-Agrawal/normalization_main", // placeholder
+  status: "In Progress"
+}
+
+
+]
+
 
   return (
     <section id="projects" className="py-20 px-4 bg-muted/30">

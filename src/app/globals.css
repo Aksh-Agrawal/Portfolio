@@ -155,9 +155,11 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    overflow-x: hidden;
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
   }
   
   /* Custom scrollbar styles */

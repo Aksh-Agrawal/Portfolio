@@ -1,17 +1,48 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { motion } from "framer-motion"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { GraduationCap, Code, Brain, Award, Trophy, Users, GitBranch, Calendar, MapPin, Star } from "lucide-react"
+import * as React from "react";
+import { motion } from "framer-motion";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  GraduationCap,
+  Code,
+  Brain,
+  Award,
+  Trophy,
+  Users,
+  GitBranch,
+  Calendar,
+  MapPin,
+  Star,
+} from "lucide-react";
 
 export function AboutSection() {
   const skills = [
-    "Python", "JavaScript", "TypeScript", "React", "Next.js",
-    "Machine Learning", "Open CV","C++", "C", "JavaScript", "HTML", "CSS", "R",
-    "Computer Vision", "Data Analysis", "Git", "Vibe Coding"
-  ]
+    "Python",
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Next.js",
+    "Machine Learning",
+    "Open CV",
+    "C++",
+    "C",
+    "JavaScript",
+    "HTML",
+    "CSS",
+    "R",
+    "Computer Vision",
+    "Data Analysis",
+    "Git",
+    "Vibe Coding",
+  ];
 
   const timeline = [
     {
@@ -19,23 +50,23 @@ export function AboutSection() {
       title: "Started B.Tech Journey",
       description: "Began Computer Science Engineering at CSVTU UTD Bhilai",
       icon: <GraduationCap className="h-5 w-5" />,
-      type: "education"
+      type: "education",
     },
     {
       year: "2024",
       title: "Perticipated in SIH",
       description: "Cleared Internal Hackathon",
       icon: <Trophy className="h-5 w-5" />,
-      type: "experince"
+      type: "experince",
     },
     {
       year: "2025, April",
       title: "Open Source Contributions",
       description: "Perticipated in SSOC 1st phase",
       icon: <GitBranch className="h-5 w-5" />,
-      type: "contribution"
+      type: "contribution",
     },
-  ]
+  ];
 
   const achievements = [
     {
@@ -43,7 +74,7 @@ export function AboutSection() {
       title: "B.Tech Computer Science",
       description: "CSVTU UTD Bhilai",
       status: "Pursuing",
-      year: "2024-2028"
+      year: "2024-2028",
     },
     {
       icon: <Code className="h-6 w-6" />,
@@ -52,29 +83,32 @@ export function AboutSection() {
       status: "Active",
       // projects: "15+ Projects"
     },
-   
-  ]
+  ];
 
   const hackathons = [
     {
       name: "Smart India Hackathon",
       position: "Cleared Internal Round",
-      description: "Built an AI-powered healthcare assistant for delivery workers",
+      description:
+        "Built an AI-powered healthcare assistant for delivery workers",
       tech: ["Iot", "Ardino"],
       // participants: "200+"
     },
     {
       name: "Ideathon — IIIT Hyderabad",
       position: "Qualified for round 2",
-      description: "Waste-to-Gold: Lithium Battery Recycling — concept for collecting, recycling, and monetizing e-waste",
+      description:
+        "Waste-to-Gold: Lithium Battery Recycling — concept for collecting, recycling, and monetizing e-waste",
       tech: ["Python", "React"],
-      participants: "150+"
+      participants: "150+",
     },
-
-  ]
+  ];
 
   return (
-    <section id="about" className="py-20 px-4 bg-gradient-to-br from-background to-muted/20">
+    <section
+      id="about"
+      className="py-20 px-4 bg-gradient-to-br from-background to-muted/20"
+    >
       <div className="container mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -85,7 +119,8 @@ export function AboutSection() {
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">About Me</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Passionate about creating intelligent solutions and interactive experiences that make a difference.
+            Passionate about creating intelligent solutions and interactive
+            experiences that make a difference.
           </p>
         </motion.div>
 
@@ -108,20 +143,23 @@ export function AboutSection() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <p className="text-muted-foreground mb-4">
-                    As a B.Tech Computer Science student at CSVTU UTD Bhilai, I'm deeply passionate about 
-                    artificial intelligence and machine learning. I specialize in building AI-driven applications 
-                    that solve real-world problems while creating engaging user experiences.
+                    As a B.Tech Computer Science student at CSVTU UTD Bhilai,
+                    I'm deeply passionate about artificial intelligence and
+                    machine learning. I specialize in building AI-driven
+                    applications that solve real-world problems while creating
+                    engaging user experiences.
                   </p>
                   <p className="text-muted-foreground">
-                    My focus areas include developing intelligent systems, creating interactive web applications, 
-                    and exploring the latest advancements in AI technology. I believe in the power of technology 
-                    to transform ideas into impactful solutions.
+                    My focus areas include developing intelligent systems,
+                    creating interactive web applications, and exploring the
+                    latest advancements in AI technology. I believe in the power
+                    of technology to transform ideas into impactful solutions.
                   </p>
                 </div>
                 <div className="space-y-4">
                   {achievements.map((achievement, index) => (
-                    <motion.div 
-                      key={index} 
+                    <motion.div
+                      key={index}
                       className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors"
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.2 }}
@@ -131,7 +169,9 @@ export function AboutSection() {
                       </div>
                       <div>
                         <h4 className="font-semibold">{achievement.title}</h4>
-                        <p className="text-sm text-muted-foreground">{achievement.description}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {achievement.description}
+                        </p>
                         <div className="flex gap-2 mt-1">
                           <Badge variant="secondary" className="text-xs">
                             {achievement.status}
@@ -202,16 +242,23 @@ export function AboutSection() {
                           <Badge variant="outline" className="text-xs">
                             {item.year}
                           </Badge>
-                          <Badge 
-                            variant={item.type === 'achievement' ? 'default' : 
-                                   item.type === 'education' ? 'secondary' : 'outline'}
+                          <Badge
+                            variant={
+                              item.type === "achievement"
+                                ? "default"
+                                : item.type === "education"
+                                ? "secondary"
+                                : "outline"
+                            }
                             className="text-xs"
                           >
                             {item.type}
                           </Badge>
                         </div>
                         <h4 className="font-semibold text-lg">{item.title}</h4>
-                        <p className="text-muted-foreground">{item.description}</p>
+                        <p className="text-muted-foreground">
+                          {item.description}
+                        </p>
                       </div>
                     </motion.div>
                   ))}
@@ -260,7 +307,9 @@ export function AboutSection() {
                       </span>
                     </div>
                     <h4 className="font-semibold mb-2">{hackathon.name}</h4>
-                    <p className="text-sm text-muted-foreground mb-3">{hackathon.description}</p>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      {hackathon.description}
+                    </p>
                     <div className="flex flex-wrap gap-1">
                       {hackathon.tech.map((tech) => (
                         <Badge key={tech} variant="outline" className="text-xs">
@@ -296,14 +345,17 @@ export function AboutSection() {
               <div className="flex flex-wrap gap-2">
                 {skills.map((skill, index) => (
                   <motion.div
-                    key={skill}
+                    key={`${skill}-${index}`}
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
                     viewport={{ once: true }}
                     whileHover={{ scale: 1.05 }}
                   >
-                    <Badge variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors cursor-default">
+                    <Badge
+                      variant="outline"
+                      className="hover:bg-primary hover:text-primary-foreground transition-colors cursor-default"
+                    >
                       {skill}
                     </Badge>
                   </motion.div>
@@ -314,5 +366,5 @@ export function AboutSection() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
