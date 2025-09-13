@@ -10,8 +10,6 @@ import {
   FadeInRight,
   ScaleIn,
 } from "@/components/gsap-scroll-animations";
-import FooterContact from "@/components/footer-contact";
-import { ClientOnly } from "@/components/client-only";
 
 export default function Home() {
   return (
