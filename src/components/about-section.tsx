@@ -8,47 +8,33 @@ import { GraduationCap, Code, Brain, Award, Trophy, Users, GitBranch, Calendar, 
 
 export function AboutSection() {
   const skills = [
-    "Python", "JavaScript", "TypeScript", "React", "Next.js", "Node.js",
-    "Machine Learning", "Deep Learning", "TensorFlow", "PyTorch", "OpenAI API",
-    "Computer Vision", "NLP", "Data Analysis", "Git", "Docker"
+    "Python", "JavaScript", "TypeScript", "React", "Next.js",
+    "Machine Learning", "Open CV","C++", "C", "JavaScript", "HTML", "CSS", "R",
+    "Computer Vision", "Data Analysis", "Git", "Vibe Coding"
   ]
 
   const timeline = [
     {
-      year: "2022",
+      year: "2024",
       title: "Started B.Tech Journey",
       description: "Began Computer Science Engineering at CSVTU UTD Bhilai",
       icon: <GraduationCap className="h-5 w-5" />,
       type: "education"
     },
     {
-      year: "2023",
-      title: "First Hackathon Win",
-      description: "Won 1st place in AI Innovation Challenge",
+      year: "2024",
+      title: "Perticipated in SIH",
+      description: "Cleared Internal Hackathon",
       icon: <Trophy className="h-5 w-5" />,
-      type: "achievement"
+      type: "experince"
     },
     {
-      year: "2023",
+      year: "2025, April",
       title: "Open Source Contributions",
-      description: "Started contributing to ML libraries and frameworks",
+      description: "Perticipated in SSOC 1st phase",
       icon: <GitBranch className="h-5 w-5" />,
       type: "contribution"
     },
-    {
-      year: "2024",
-      title: "AI Research Intern",
-      description: "Working on cutting-edge NLP research projects",
-      icon: <Brain className="h-5 w-5" />,
-      type: "work"
-    },
-    {
-      year: "2024",
-      title: "Tech Community Leader",
-      description: "Leading AI/ML workshops and mentoring juniors",
-      icon: <Users className="h-5 w-5" />,
-      type: "leadership"
-    }
   ]
 
   const achievements = [
@@ -57,46 +43,34 @@ export function AboutSection() {
       title: "B.Tech Computer Science",
       description: "CSVTU UTD Bhilai",
       status: "Pursuing",
-      year: "2022-2026"
+      year: "2024-2028"
     },
     {
       icon: <Code className="h-6 w-6" />,
       title: "AI/ML Enthusiast",
       description: "Building intelligent applications",
       status: "Active",
-      projects: "15+ Projects"
+      // projects: "15+ Projects"
     },
-    {
-      icon: <Brain className="h-6 w-6" />,
-      title: "Interactive Experiences",
-      description: "Creating engaging user interfaces",
-      status: "Passionate",
-      impact: "500+ Users"
-    }
+   
   ]
 
   const hackathons = [
     {
-      name: "AI Innovation Challenge 2023",
-      position: "1st Place",
-      description: "Built an AI-powered healthcare assistant",
-      tech: ["Python", "TensorFlow", "Flask"],
-      participants: "200+"
+      name: "Smart India Hackathon",
+      position: "Cleared Internal Round",
+      description: "Built an AI-powered healthcare assistant for delivery workers",
+      tech: ["Iot", "Ardino"],
+      // participants: "200+"
     },
     {
-      name: "TechFest Hackathon 2024",
-      position: "Top 5",
-      description: "Developed a real-time object detection system",
-      tech: ["OpenCV", "YOLO", "React"],
+      name: "Ideathon — IIIT Hyderabad",
+      position: "Qualified for round 2",
+      description: "Waste-to-Gold: Lithium Battery Recycling — concept for collecting, recycling, and monetizing e-waste",
+      tech: ["Python", "React"],
       participants: "150+"
     },
-    {
-      name: "Startup Weekend Bhilai",
-      position: "Finalist",
-      description: "Created a smart home automation prototype",
-      tech: ["IoT", "Arduino", "Node.js"],
-      participants: "100+"
-    }
+
   ]
 
   return (
@@ -167,16 +141,16 @@ export function AboutSection() {
                               {achievement.year}
                             </Badge>
                           )}
-                          {achievement.projects && (
+                          {/* {achievement.projects && (
                             <Badge variant="outline" className="text-xs">
                               {achievement.projects}
                             </Badge>
-                          )}
-                          {achievement.impact && (
+                          )} */}
+                          {/* {achievement.impact && (
                             <Badge variant="outline" className="text-xs">
                               {achievement.impact}
-                            </Badge>
-                          )}
+                            </Badge> */}
+                          {/* )} */}
                         </div>
                       </div>
                     </motion.div>
