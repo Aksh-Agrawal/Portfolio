@@ -1,28 +1,43 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { motion } from "framer-motion"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Github, Calendar, TrendingUp, Star, ExternalLink, GitBranch, Users, BookOpen } from "lucide-react"
+import * as React from "react";
+import { motion } from "framer-motion";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Github,
+  Calendar,
+  TrendingUp,
+  Star,
+  ExternalLink,
+  GitBranch,
+  Users,
+  BookOpen,
+} from "lucide-react";
 
 interface GitHubData {
-  totalContributions: number
-  activeDays: number
-  repositories: number
-  recentActivity: string[]
-  topLanguages: { name: string; percentage: number; color: string }[]
-  stats: { label: string; value: string; icon: any }[]
-  contributionWeeks: { week: string; contributions: number }[]
-  recentRepos: any[]
+  totalContributions: number;
+  activeDays: number;
+  repositories: number;
+  recentActivity: string[];
+  topLanguages: { name: string; percentage: number; color: string }[];
+  stats: { label: string; value: string; icon: any }[];
+  contributionWeeks: { week: string; contributions: number }[];
+  recentRepos: any[];
 }
 
 export function GitHubActivity() {
-  const [githubData, setGitHubData] = React.useState<GitHubData | null>(null)
-  const [loading, setLoading] = React.useState(true)
-  const [error, setError] = React.useState<string | null>(null)
+  const [githubData, setGitHubData] = React.useState<GitHubData | null>(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
 
-  const username = "aksh-agrawal"
+  const username = "aksh-agrawal";
 
   // Language colors for better visualization
   const languageColors: { [key: string]: string } = {
@@ -42,35 +57,49 @@ export function GitHubActivity() {
     Ruby: "#701516",
     Swift: "#fa7343",
     Kotlin: "#A97BFF",
-    Other: "#8e8e93"
-  }
+    Other: "#8e8e93",
+  };
 
   React.useEffect(() => {
     const fetchGitHubData = async () => {
       try {
-        setLoading(true)
-        setError(null)
+        setLoading(true);
+        setError(null);
 
         // Fetch user data and repositories
-        const [userResponse, reposResponse, eventsResponse] = await Promise.all([
-          fetch(`https://api.github.com/users/${username}`),
-          fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`),
-          fetch(`https://api.github.com/users/${username}/events?per_page=100`).catch(() => null)
-        ])
+        const [userResponse, reposResponse, eventsResponse] = await Promise.all(
+          [
+            fetch(`https://api.github.com/users/${username}`),
+            fetch(
+              `https://api.github.com/users/${username}/repos?sort=updated&per_page=100`
+            ),
+            fetch(
+              `https://api.github.com/users/${username}/events?per_page=100`
+            ).catch(() => null),
+          ]
+        );
 
         if (!userResponse.ok) {
-          throw new Error(`GitHub user not found: ${username}`)
+          throw new Error(`GitHub user not found: ${username}`);
         }
 
-        const userData = await userResponse.json()
-        const reposData = await reposResponse.json()
-        const eventsData = eventsResponse?.ok ? await eventsResponse.json() : []
+        const userData = await userResponse.json();
+        const reposData = await reposResponse.json();
+        const eventsData = eventsResponse?.ok
+          ? await eventsResponse.json()
+          : [];
 
         // Calculate real statistics
-        const totalRepos = userData.public_repos || 0
-        const totalStars = reposData.reduce((sum: number, repo: any) => sum + (repo.stargazers_count || 0), 0)
-        const totalForks = reposData.reduce((sum: number, repo: any) => sum + (repo.forks_count || 0), 0)
-        const followers = userData.followers || 0
+        const totalRepos = userData.public_repos || 0;
+        const totalStars = reposData.reduce(
+          (sum: number, repo: any) => sum + (repo.stargazers_count || 0),
+          0
+        );
+        const totalForks = reposData.reduce(
+          (sum: number, repo: any) => sum + (repo.forks_count || 0),
+          0
+        );
+        const followers = userData.followers || 0;
 
         // Get recent repositories with more details
         const recentRepos = reposData
@@ -81,153 +110,195 @@ export function GitHubActivity() {
             description: repo.description || "No description",
             language: repo.language,
             stars: repo.stargazers_count,
-            updatedAt: new Date(repo.updated_at)
-          }))
+            updatedAt: new Date(repo.updated_at),
+          }));
 
         // Calculate language statistics
-        const languageStats: { [key: string]: number } = {}
-        const repoCount: { [key: string]: number } = {}
-        
-        reposData.forEach((repo: any) => {
-          if (repo.language && !repo.fork) { // Don't count forked repos
-            languageStats[repo.language] = (languageStats[repo.language] || 0) + (repo.size || 1)
-            repoCount[repo.language] = (repoCount[repo.language] || 0) + 1
-          }
-        })
+        const languageStats: { [key: string]: number } = {};
+        const repoCount: { [key: string]: number } = {};
 
-        const totalSize = Object.values(languageStats).reduce((sum: number, size: number) => sum + size, 0)
+        reposData.forEach((repo: any) => {
+          if (repo.language && !repo.fork) {
+            // Don't count forked repos
+            languageStats[repo.language] =
+              (languageStats[repo.language] || 0) + (repo.size || 1);
+            repoCount[repo.language] = (repoCount[repo.language] || 0) + 1;
+          }
+        });
+
+        const totalSize = Object.values(languageStats).reduce(
+          (sum: number, size: number) => sum + size,
+          0
+        );
         const topLanguages = Object.entries(languageStats)
-          .sort(([,a], [,b]) => b - a)
+          .sort(([, a], [, b]) => b - a)
           .slice(0, 5)
           .map(([lang, size]) => ({
             name: lang,
             percentage: Math.round((size / totalSize) * 100),
-            color: languageColors[lang] || languageColors.Other
-          }))
+            color: languageColors[lang] || languageColors.Other,
+          }));
 
         // Generate more realistic activity data based on actual repo updates
-        const contributionWeeks = generateContributionData(reposData, eventsData)
-        
+        const contributionWeeks = generateContributionData(
+          reposData,
+          eventsData
+        );
+
         // Estimate contributions from repo activity and events
         const estimatedContributions = Math.max(
           eventsData.length * 2, // Rough estimate from events
           reposData.filter((repo: any) => !repo.fork).length * 10, // 10 commits per repo average
           365 // Minimum baseline
-        )
+        );
 
         // Estimate active days (more conservative)
         const activeDays = Math.min(
           Math.floor(estimatedContributions / 3), // Average 3 contributions per active day
           300 // Max realistic active days in a year
-        )
+        );
 
         // Generate recent activity from actual repos and events
-        const recentActivity = generateRecentActivity(recentRepos, eventsData)
+        const recentActivity = generateRecentActivity(recentRepos, eventsData);
 
         setGitHubData({
           totalContributions: estimatedContributions,
           activeDays: activeDays,
           repositories: totalRepos,
           recentActivity,
-          topLanguages: topLanguages.length > 0 ? topLanguages : [
-            { name: 'JavaScript', percentage: 40, color: languageColors.JavaScript },
-            { name: 'Python', percentage: 30, color: languageColors.Python },
-            { name: 'TypeScript', percentage: 20, color: languageColors.TypeScript },
-            { name: 'Other', percentage: 10, color: languageColors.Other }
-          ],
+          topLanguages:
+            topLanguages.length > 0
+              ? topLanguages
+              : [
+                  {
+                    name: "JavaScript",
+                    percentage: 40,
+                    color: languageColors.JavaScript,
+                  },
+                  {
+                    name: "Python",
+                    percentage: 30,
+                    color: languageColors.Python,
+                  },
+                  {
+                    name: "TypeScript",
+                    percentage: 20,
+                    color: languageColors.TypeScript,
+                  },
+                  {
+                    name: "Other",
+                    percentage: 10,
+                    color: languageColors.Other,
+                  },
+                ],
           stats: [
-            { label: 'Repositories', value: totalRepos.toString(), icon: BookOpen },
-            { label: 'Stars Earned', value: totalStars.toString(), icon: Star },
-            { label: 'Forks', value: totalForks.toString(), icon: GitBranch },
-            { label: 'Followers', value: followers.toString(), icon: Users }
+            {
+              label: "Repositories",
+              value: totalRepos.toString(),
+              icon: BookOpen,
+            },
+            { label: "Stars Earned", value: totalStars.toString(), icon: Star },
+            { label: "Forks", value: totalForks.toString(), icon: GitBranch },
+            { label: "Followers", value: followers.toString(), icon: Users },
           ],
           contributionWeeks,
-          recentRepos
-        })
-
+          recentRepos,
+        });
       } catch (error) {
-        console.error('Error fetching GitHub data:', error)
-        setError(error instanceof Error ? error.message : 'Failed to fetch GitHub data')
+        console.error("Error fetching GitHub data:", error);
+        setError(
+          error instanceof Error ? error.message : "Failed to fetch GitHub data"
+        );
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchGitHubData()
-  }, [username])
+    fetchGitHubData();
+  }, [username]);
 
   // Generate weekly contribution data based on actual repo activity
   const generateContributionData = (repos: any[], events: any[]) => {
-    const weeks = []
-    const now = new Date()
-    
+    const weeks = [];
+    const now = new Date();
+
     // Create 52 weeks of data
     for (let i = 51; i >= 0; i--) {
-      const weekStart = new Date(now.getTime() - (i * 7 * 24 * 60 * 60 * 1000))
-      const weekEnd = new Date(weekStart.getTime() + (7 * 24 * 60 * 60 * 1000))
-      
+      const weekStart = new Date(now.getTime() - i * 7 * 24 * 60 * 60 * 1000);
+      const weekEnd = new Date(weekStart.getTime() + 7 * 24 * 60 * 60 * 1000);
+
       // Count repo updates in this week
       const repoUpdates = repos.filter((repo: any) => {
-        const updated = new Date(repo.updated_at)
-        return updated >= weekStart && updated < weekEnd && !repo.fork
-      }).length
+        const updated = new Date(repo.updated_at);
+        return updated >= weekStart && updated < weekEnd && !repo.fork;
+      }).length;
 
       // Count events in this week
       const weekEvents = events.filter((event: any) => {
-        const created = new Date(event.created_at)
-        return created >= weekStart && created < weekEnd
-      }).length
+        const created = new Date(event.created_at);
+        return created >= weekStart && created < weekEnd;
+      }).length;
 
       // Combine and add some randomness for realistic pattern
-      let contributions = repoUpdates * 3 + weekEvents
-      
+      let contributions = repoUpdates * 3 + weekEvents;
+
       // Add realistic daily variation (weekends less active)
-      const isRecentWeek = i < 8
+      const isRecentWeek = i < 8;
       if (isRecentWeek) {
-        contributions += Math.floor(Math.random() * 5)
+        contributions += Math.floor(Math.random() * 5);
       } else {
-        contributions += Math.floor(Math.random() * 3)
+        contributions += Math.floor(Math.random() * 3);
       }
 
       weeks.push({
-        week: weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        contributions: Math.max(0, contributions)
-      })
+        week: weekStart.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        }),
+        contributions: Math.max(0, contributions),
+      });
     }
-    
-    return weeks
-  }
+
+    return weeks;
+  };
 
   // Generate recent activity from real data
   const generateRecentActivity = (repos: any[], events: any[]) => {
-    const activities = []
-    
+    const activities: string[] = [];
+
     // Add recent repo activities
-    repos.slice(0, 3).forEach(repo => {
-      const timeAgo = getTimeAgo(repo.updatedAt)
-      activities.push(`Updated ${repo.name} - ${timeAgo}`)
-    })
-    
+    repos.slice(0, 3).forEach((repo) => {
+      const timeAgo = getTimeAgo(repo.updatedAt);
+      activities.push(`Updated ${repo.name} - ${timeAgo}`);
+    });
+
     // Add recent events if available
     events.slice(0, 2).forEach((event: any) => {
-      const timeAgo = getTimeAgo(new Date(event.created_at))
-      const eventType = event.type.replace('Event', '')
-      activities.push(`${eventType} on ${event.repo?.name || 'repository'} - ${timeAgo}`)
-    })
-    
-    return activities.slice(0, 5)
-  }
+      const timeAgo = getTimeAgo(new Date(event.created_at));
+      const eventType = event.type.replace("Event", "");
+      activities.push(
+        `${eventType} on ${event.repo?.name || "repository"} - ${timeAgo}`
+      );
+    });
+
+    return activities.slice(0, 5);
+  };
 
   const getTimeAgo = (date: Date) => {
-    const now = new Date()
-    const diffTime = Math.abs(now.getTime() - date.getTime())
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    
-    if (diffDays === 1) return '1 day ago'
-    if (diffDays < 7) return `${diffDays} days ago`
-    if (diffDays < 30) return `${Math.ceil(diffDays / 7)} week${Math.ceil(diffDays / 7) > 1 ? 's' : ''} ago`
-    return `${Math.ceil(diffDays / 30)} month${Math.ceil(diffDays / 30) > 1 ? 's' : ''} ago`
-  }
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 1) return "1 day ago";
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 30)
+      return `${Math.ceil(diffDays / 7)} week${
+        Math.ceil(diffDays / 7) > 1 ? "s" : ""
+      } ago`;
+    return `${Math.ceil(diffDays / 30)} month${
+      Math.ceil(diffDays / 30) > 1 ? "s" : ""
+    } ago`;
+  };
 
   if (loading) {
     return (
@@ -239,7 +310,7 @@ export function GitHubActivity() {
           </div>
         </div>
       </section>
-    )
+    );
   }
 
   if (error) {
@@ -267,11 +338,14 @@ export function GitHubActivity() {
           </div>
         </div>
       </section>
-    )
+    );
   }
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
+    <section
+      id="github-activity"
+      className="py-20 px-4 bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden"
+    >
       {/* Animated background */}
       <div className="absolute inset-0">
         {[...Array(30)].map((_, i) => (
@@ -308,7 +382,8 @@ export function GitHubActivity() {
             GitHub Activity
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-4">
-            My coding journey visualized through contributions and open-source work
+            My coding journey visualized through contributions and open-source
+            work
           </p>
           <motion.a
             href={`https://github.com/${username}`}
@@ -423,15 +498,24 @@ export function GitHubActivity() {
                       key={index}
                       className="flex flex-col items-center gap-2"
                       initial={{ height: 0 }}
-                      whileInView={{ height: 'auto' }}
+                      whileInView={{ height: "auto" }}
                       transition={{ duration: 0.5, delay: index * 0.02 }}
                       viewport={{ once: true }}
                     >
                       <motion.div
                         className="bg-primary/70 rounded-t min-w-[8px] hover:bg-primary transition-colors cursor-pointer relative group"
                         initial={{ height: 0 }}
-                        whileInView={{ 
-                          height: `${Math.max(4, (week.contributions / Math.max(...githubData.contributionWeeks.map(w => w.contributions))) * 200)}px` 
+                        whileInView={{
+                          height: `${Math.max(
+                            4,
+                            (week.contributions /
+                              Math.max(
+                                ...githubData.contributionWeeks.map(
+                                  (w) => w.contributions
+                                )
+                              )) *
+                              200
+                          )}px`,
                         }}
                         transition={{ duration: 0.8, delay: index * 0.02 }}
                         viewport={{ once: true }}
@@ -527,8 +611,12 @@ export function GitHubActivity() {
                       />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm font-medium">{lang.name}</span>
-                          <span className="text-sm text-muted-foreground">{lang.percentage}%</span>
+                          <span className="text-sm font-medium">
+                            {lang.name}
+                          </span>
+                          <span className="text-sm text-muted-foreground">
+                            {lang.percentage}%
+                          </span>
                         </div>
                         <div className="w-full bg-muted rounded-full h-2">
                           <motion.div
@@ -536,7 +624,10 @@ export function GitHubActivity() {
                             style={{ backgroundColor: lang.color }}
                             initial={{ width: 0 }}
                             whileInView={{ width: `${lang.percentage}%` }}
-                            transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
+                            transition={{
+                              duration: 1,
+                              delay: 0.5 + index * 0.1,
+                            }}
                             viewport={{ once: true }}
                           />
                         </div>
@@ -570,7 +661,7 @@ export function GitHubActivity() {
             <CardContent>
               <div className="grid md:grid-cols-4 gap-6">
                 {githubData?.stats.map((stat, index) => {
-                  const IconComponent = stat.icon
+                  const IconComponent = stat.icon;
                   return (
                     <motion.div
                       key={stat.label}
@@ -582,10 +673,14 @@ export function GitHubActivity() {
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
                       <IconComponent className="h-8 w-8 text-primary mx-auto mb-3" />
-                      <div className="text-3xl font-bold text-primary mb-1">{stat.value}</div>
-                      <div className="text-sm text-muted-foreground">{stat.label}</div>
+                      <div className="text-3xl font-bold text-primary mb-1">
+                        {stat.value}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {stat.label}
+                      </div>
                     </motion.div>
-                  )
+                  );
                 })}
               </div>
             </CardContent>
@@ -593,5 +688,5 @@ export function GitHubActivity() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

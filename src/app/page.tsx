@@ -4,7 +4,13 @@ import { AboutSection } from "@/components/about-section";
 import { GitHubActivity } from "@/components/github-activity";
 import { ProjectsSection } from "@/components/projects-section";
 import { ResumeSection } from "@/components/resume-section";
-import { FadeInUp, FadeInLeft, FadeInRight, ScaleIn } from "@/components/gsap-scroll-animations";
+import {
+  FadeInUp,
+  FadeInLeft,
+  FadeInRight,
+  ScaleIn,
+} from "@/components/gsap-scroll-animations";
+import FooterContact from "@/components/footer-contact";
 import { ClientOnly } from "@/components/client-only";
 
 export default function Home() {
@@ -24,6 +30,7 @@ export default function Home() {
       <ScaleIn>
         <ResumeSection />
       </ScaleIn>
+    
     </div>
   );
 }
