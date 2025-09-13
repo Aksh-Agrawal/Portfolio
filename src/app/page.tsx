@@ -1,19 +1,29 @@
-import { Navigation } from "@/components/navigation";
-import { HeroSection } from "@/components/hero-section";
+import { GSAPNavigation } from "@/components/gsap-navigation";
+import { GSAPHeroSection } from "@/components/gsap-hero-section";
 import { AboutSection } from "@/components/about-section";
 import { GitHubActivity } from "@/components/github-activity";
 import { ProjectsSection } from "@/components/projects-section";
 import { ResumeSection } from "@/components/resume-section";
+import { FadeInUp, FadeInLeft, FadeInRight, ScaleIn } from "@/components/gsap-scroll-animations";
+import { ClientOnly } from "@/components/client-only";
 
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <Navigation />
-      <HeroSection />
-      <AboutSection />
-      <GitHubActivity />
-      <ProjectsSection />
-      <ResumeSection />
+      <GSAPNavigation />
+      <GSAPHeroSection />
+      <FadeInUp>
+        <AboutSection />
+      </FadeInUp>
+      <FadeInLeft>
+        <GitHubActivity />
+      </FadeInLeft>
+      <FadeInRight>
+        <ProjectsSection />
+      </FadeInRight>
+      <ScaleIn>
+        <ResumeSection />
+      </ScaleIn>
     </div>
   );
 }
