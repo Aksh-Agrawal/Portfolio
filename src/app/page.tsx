@@ -1,7 +1,7 @@
 import { GSAPNavigation } from "@/components/gsap-navigation";
 import { GSAPHeroSection } from "@/components/gsap-hero-section";
 import { AboutSection } from "@/components/about-section";
-import { GitHubActivity } from "@/components/github-activity";
+import { GitHubActivity, GithubCalendarSection } from "@/components/github-activity";
 import { ProjectsSection } from "@/components/projects-section";
 import { ResumeSection } from "@/components/resume-section";
 import {
@@ -22,6 +22,7 @@ export default function Home() {
       <FadeInLeft>
         <GitHubActivity />
       </FadeInLeft>
+     
       <FadeInRight>
         <ProjectsSection />
       </FadeInRight>

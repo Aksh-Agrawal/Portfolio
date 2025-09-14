@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useLenis } from "@/lib/LenisProvider";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Code, Brain, Sparkles } from "lucide-react";
@@ -144,6 +145,12 @@ export function GSAPHeroSection() {
 
     return () => clearTimeout(timer);
   }, []);
+  const { scroll } = useLenis();
+  React.useEffect(() => {
+    if (heroRef.current) {
+      heroRef.current.style.transform = `translateY(${scroll * 0.2}px)`;
+    }
+  }, [scroll]);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);

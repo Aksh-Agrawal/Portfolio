@@ -31,6 +31,96 @@ interface GitHubData {
   contributionWeeks: { week: string; contributions: number }[];
   recentRepos: any[];
 }
+// GitHub Calendar Component
+import GitHubCalendar from "react-github-calendar";
+
+export function GithubCalendarSection() {
+  return (
+    <section className="py-20 px-4 bg-gradient-to-br from-background via-background to-primary/5">
+      <div className="container mx-auto max-w-4xl text-center">
+        <style>{`
+          /* Pink gradient for GitHubCalendar heatmap and legend */
+          .react-github-calendar .contrib-legend .legend-color {
+            background: #ededed !important;
+          }
+          .react-github-calendar .contrib-legend .legend-color[data-level="1"] {
+            background: #ffb3e6 !important;
+          }
+          .react-github-calendar .contrib-legend .legend-color[data-level="2"] {
+            background: #ff66cc !important;
+          }
+          .react-github-calendar .contrib-legend .legend-color[data-level="3"] {
+            background: #ff00cc !important;
+          }
+          .react-github-calendar .contrib-legend .legend-color[data-level="4"] {
+            background: #c800a1 !important;
+          }
+          .react-github-calendar .day[data-level="0"] {
+            fill: #ededed !important;
+          }
+          .react-github-calendar .day[data-level="1"] {
+            fill: #ffb3e6 !important;
+          }
+          .react-github-calendar .day[data-level="2"] {
+            fill: #ff66cc !important;
+          }
+          .react-github-calendar .day[data-level="3"] {
+            fill: #ff00cc !important;
+          }
+          .react-github-calendar .day[data-level="4"] {
+            fill: #c800a1 !important;
+          }
+        `}</style>
+        <h1 className="text-4xl md:text-5xl font-bold mb-8" style={{ fontFamily: 'Orbitron, monospace', letterSpacing: '2px', color: '#ff00cc', textShadow: '0 0 8px #ff00cc' }}>
+          Days I <span style={{ color: '#ffffffff', textShadow: '0 0 8px #ff00cc' }}>Commit</span>
+        </h1>
+        <div
+          className="flex justify-center items-center"
+          style={{
+            background: 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #ff00cc 100%)',
+            borderRadius: '24px',
+            boxShadow: '0 0 16px #ff00cc',
+            padding: '48px 24px',
+            border: '2px solid #ff00cc',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+          
+        >
+         
+          <GitHubCalendar
+            username="aksh-agrawal"
+            blockSize={20}
+            blockMargin={7}
+            fontSize={20}
+            // colorScheme={["#ededed", "#ffb3e6", "#ff66cc", "#ff00cc", "#c800a1"]}
+            transformData={(data) =>
+              data.map((day) => ({
+                ...day,
+                color: day.count > 0 ? '#ff00cc' : '#ededed',
+              }))
+            }
+          />
+          
+          {/* Cyberpunk neon grid overlay */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 60,
+            width: '200%',
+            height: '100%',
+            pointerEvents: 'none',
+            background: 'repeating-linear-gradient(90deg, transparent, transparent 29px, #ff00cc33 30px), repeating-linear-gradient(0deg, transparent, transparent 29px, #00ffe733 30px)'
+          }} />
+        </div>
+       <h1 className="text-0.4xs md:text-5xs font-bold mb-8 top-96" style={{ fontFamily: 'Orbitron, monospace', letterSpacing: '2px', color: '#ff00cc', textShadow: '0 0 8px #ff00cc' }}>
+          Scroll <span style={{ color: '#ffffffff', textShadow: '0 0 8px #ff00cc' }}>Right</span>
+        </h1>
+      </div>
+    </section>
+    
+  );
+}
 
 export function GitHubActivity() {
   const [githubData, setGitHubData] = React.useState<GitHubData | null>(null);
@@ -472,7 +562,7 @@ export function GitHubActivity() {
           </motion.div>
         </div>
 
-        {/* Weekly Contribution Chart */}
+        {/* GitHub Calendar replaces Weekly Activity */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -480,63 +570,7 @@ export function GitHubActivity() {
           viewport={{ once: true }}
           className="mb-12"
         >
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-primary" />
-                Weekly Activity
-              </CardTitle>
-              <CardDescription>
-                Contribution activity over the last year
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-64 w-full overflow-x-auto">
-                <div className="flex items-end justify-between gap-1 min-w-full h-full pb-8">
-                  {githubData?.contributionWeeks.map((week, index) => (
-                    <motion.div
-                      key={index}
-                      className="flex flex-col items-center gap-2"
-                      initial={{ height: 0 }}
-                      whileInView={{ height: "auto" }}
-                      transition={{ duration: 0.5, delay: index * 0.02 }}
-                      viewport={{ once: true }}
-                    >
-                      <motion.div
-                        className="bg-primary/70 rounded-t min-w-[8px] hover:bg-primary transition-colors cursor-pointer relative group"
-                        initial={{ height: 0 }}
-                        whileInView={{
-                          height: `${Math.max(
-                            4,
-                            (week.contributions /
-                              Math.max(
-                                ...githubData.contributionWeeks.map(
-                                  (w) => w.contributions
-                                )
-                              )) *
-                              200
-                          )}px`,
-                        }}
-                        transition={{ duration: 0.8, delay: index * 0.02 }}
-                        viewport={{ once: true }}
-                      >
-                        <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-background border rounded px-2 py-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                          {week.contributions} contributions
-                          <br />
-                          Week of {week.week}
-                        </div>
-                      </motion.div>
-                      {index % 8 === 0 && (
-                        <div className="text-xs text-muted-foreground transform -rotate-45 whitespace-nowrap">
-                          {week.week}
-                        </div>
-                      )}
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <GithubCalendarSection />
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-8">
