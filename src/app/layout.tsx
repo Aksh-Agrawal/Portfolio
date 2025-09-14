@@ -16,7 +16,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Aksh Agrawal - AI Developer & Interactive Experiences",
-  description: "Portfolio of Aksh Agrawal, B.Tech Computer Science student at CSVTU UTD Bhilai. Specializing in AI-driven applications and interactive experiences.",
+  description:
+    "Portfolio of Aksh Agrawal, B.Tech Computer Science student at CSVTU UTD Bhilai. Specializing in AI-driven applications and interactive experiences.",
 };
 
 export default function RootLayout({
@@ -26,7 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <ThemeProvider>
           <LenisProvider>{children}</LenisProvider>
         </ThemeProvider>

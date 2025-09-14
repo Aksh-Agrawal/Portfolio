@@ -1,5 +1,11 @@
 "use client";
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Lenis from "lenis";
 
 interface LenisContextType {
@@ -16,7 +22,9 @@ export const useLenis = () => {
   return ctx;
 };
 
-export const LenisProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const LenisProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [scroll, setScroll] = useState(0);
   const lenisRef = useRef<Lenis | null>(null);
 
@@ -42,7 +50,9 @@ export const LenisProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   return (
-    <LenisContext.Provider value={{ lenis: lenisRef.current, scroll, scrollTo }}>
+    <LenisContext.Provider
+      value={{ lenis: lenisRef.current, scroll, scrollTo }}
+    >
       {children}
     </LenisContext.Provider>
   );
