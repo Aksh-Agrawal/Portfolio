@@ -15,10 +15,13 @@ if (typeof window !== "undefined") {
 
 export function GSAPHeroSection() {
   const heroRef = React.useRef<HTMLDivElement>(null);
+  const bgRef = React.useRef<HTMLDivElement>(null);
   const titleRef = React.useRef<HTMLHeadingElement>(null);
   const subtitleRef = React.useRef<HTMLParagraphElement>(null);
   const buttonsRef = React.useRef<HTMLDivElement>(null);
   const particlesRef = React.useRef<HTMLDivElement>(null);
+  const imagesRef = React.useRef<HTMLDivElement>(null);
+  const [maxBgShift, setMaxBgShift] = React.useState(0);
 
   React.useEffect(() => {
     if (typeof window === "undefined") return;
@@ -117,6 +120,32 @@ export function GSAPHeroSection() {
           });
         }
 
+        // Background image chips animation (25 items)
+        if (imagesRef.current && imagesRef.current.children) {
+          const chips = Array.from(imagesRef.current.children);
+          gsap.set(chips, { opacity: 0, scale: 0.9 });
+
+          gsap.to(chips, {
+            opacity: 1,
+            duration: 1,
+            stagger: 0.08,
+            delay: 1.8,
+            ease: "power1.inOut",
+          });
+
+          chips.forEach((chip, index) => {
+            gsap.to(chip, {
+              y: "random(-30, 30)",
+              rotation: "random(-25, 25)",
+              duration: "random(2, 4)",
+              repeat: -1,
+              yoyo: true,
+              ease: "power1.inOut",
+              delay: index * 0.05,
+            });
+          });
+        }
+
         // Scroll-triggered animations
         gsap.fromTo(
           ".scroll-indicator",
@@ -146,11 +175,51 @@ export function GSAPHeroSection() {
     return () => clearTimeout(timer);
   }, []);
   const { scroll } = useLenis();
+
+  // Measure background extra height vs section height to know how much we can scroll the bg
+  React.useLayoutEffect(() => {
+    if (typeof window === "undefined") return;
+    const measure = () => {
+      const heroEl = heroRef.current;
+      const bgEl = bgRef.current;
+      if (!heroEl || !bgEl) return;
+      const heroH = heroEl.offsetHeight;
+      const bgH = bgEl.offsetHeight;
+      setMaxBgShift(Math.max(0, bgH - heroH));
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  // Pin hero and scrub background translate so background scrolls first
   React.useEffect(() => {
-    if (heroRef.current) {
-      heroRef.current.style.transform = `translateY(${scroll * 0.2}px)`;
-    }
-  }, [scroll]);
+    if (typeof window === "undefined") return;
+    const heroEl = heroRef.current;
+    const bgEl = bgRef.current;
+    if (!heroEl || !bgEl || maxBgShift <= 0) return;
+
+    // Build timeline for background scrub
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: heroEl,
+        start: "top top",
+        end: () => "+=" + maxBgShift,
+        pin: true,
+        scrub: true,
+        anticipatePin: 1,
+      },
+    });
+    tl.fromTo(bgEl, { y: 0 }, { y: -maxBgShift, ease: "none" });
+
+    // Refresh in case layout changed
+    requestAnimationFrame(() => ScrollTrigger.refresh());
+
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+    };
+  }, [maxBgShift]);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -166,7 +235,10 @@ export function GSAPHeroSection() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Interactive Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/10">
+      <div
+        ref={bgRef}
+        className="absolute inset-x-0 top-0 h-[300vh] bg-gradient-to-br from-background via-background to-primary/10 will-change-transform"
+      >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(120,119,198,0.05),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(120,119,198,0.05),transparent_50%)]" />
@@ -200,6 +272,50 @@ export function GSAPHeroSection() {
             );
           })}
         </div>
+
+        {/* Background Chips: 25 image divs that scroll with background */}
+        <div ref={imagesRef} className="absolute inset-0 pointer-events-none">
+          {[...Array(25)].map((_, i) => {
+            // seeded random for SSR-safe positions
+            const seededRandom = (seed: number) => {
+              const x = Math.sin(seed) * 10000;
+              return x - Math.floor(x);
+            };
+            const left = (seededRandom(i * 0.37) * 100).toFixed(4);
+            const top = (seededRandom(i * 0.37 + 2.17) * 100).toFixed(4);
+            const size = 24 + Math.floor(seededRandom(i * 0.73) * 16); // 24-40px
+            const imgs = [
+              "/globe.svg",
+              "/window.svg",
+              "/vercel.svg",
+              "/next.svg",
+              "/file.svg",
+            ];
+            const src = imgs[i % imgs.length];
+            return (
+              <div
+                key={`chip-${i}`}
+                className="c-- r-- absolute"
+                style={{
+                  left: `${left}%`,
+                  top: `${top}%`,
+                  width: size,
+                  height: size,
+                }}
+              >
+                <img
+                  src={src}
+                  alt=""
+                  width={size}
+                  height={size}
+                  className="opacity-70"
+                  loading="lazy"
+                  draggable={false}
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* Content */}
@@ -215,7 +331,7 @@ export function GSAPHeroSection() {
         {/* Subtitle */}
         <div ref={subtitleRef} className="mb-8">
           <p className="text-xl md:text-2xl text-muted-foreground mb-4">
-            B.Tech Computer Science Student at CSVTU UTD Bhilai
+            B.Tech (Hons.) Computer Science (DS) Student at CSVTU UTD Bhilai
           </p>
           <p className="text-lg md:text-xl text-muted-foreground">
             Specializing in AI-driven applications and interactive experiences

@@ -87,8 +87,9 @@ export function AboutSection() {
   const timeline = [
     {
       year: "2024",
-      title: "Started B.Tech Journey",
-      description: "Began Computer Science Engineering at CSVTU UTD Bhilai",
+      title: "Started B.Tech (Hons.) Journey",
+      description:
+        "Began Computer Science (DS) Engineering at CSVTU UTD Bhilai",
       icon: <GraduationCap className="h-5 w-5" />,
       type: "education",
     },
@@ -111,7 +112,7 @@ export function AboutSection() {
   const achievements = [
     {
       icon: <GraduationCap className="h-6 w-6" />,
-      title: "B.Tech Computer Science",
+      title: "B.Tech (Hons.) Computer Science (DS)",
       description: "CSVTU UTD Bhilai",
       status: "Pursuing",
       year: "2024-2028",
@@ -193,11 +194,11 @@ export function AboutSection() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <p className="text-muted-foreground mb-4">
-                    As a B.Tech Computer Science student at CSVTU UTD Bhilai,
-                    I'm deeply passionate about artificial intelligence and
-                    machine learning. I specialize in building AI-driven
-                    applications that solve real-world problems while creating
-                    engaging user experiences.
+                    As a B.Tech (Hons.) Computer Science (DS) student at CSVTU
+                    UTD Bhilai, I'm deeply passionate about artificial
+                    intelligence and machine learning. I specialize in building
+                    AI-driven applications that solve real-world problems while
+                    creating engaging user experiences.
                   </p>
                   <p className="text-muted-foreground">
                     My focus areas include developing intelligent systems,

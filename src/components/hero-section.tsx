@@ -81,7 +81,7 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            B.Tech Undergraduate at CSVTU UTD Bhilai
+            B.Tech (Hons.) Undergraduate at CSVTU UTD Bhilai
           </motion.p>
         </motion.div>
 

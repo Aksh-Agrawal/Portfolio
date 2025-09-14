@@ -48,9 +48,9 @@ export function ResumeSection() {
     education: [
       {
         degree: "Bachelor of Technology Hons.",
-        field: "Computer Science Engineering",
+        field: "Computer Science (DS) Engineering",
         institution: "CSVTU UTD Bhilai",
-        duration: "2022 - 2026",
+        duration: "2024 - 2028",
         location: "Bhilai, Chhattisgarh",
         gpa: "7.19/10",
         achievements: [
@@ -176,10 +176,10 @@ export function ResumeSection() {
         "C",
         "R",
       ],
-      frameworks: ["React", "Next.js", "ShanCN"],
+      frameworks: ["React", "Next.js", "ShadCN"],
       ai_ml: ["Scikit-learn", "OpenCV", "Numpy", "Pandas"],
       tools: ["Git", "Docker"],
-      soft: [
+      soft_skill: [
         "Leadership",
         "Problem Solving",
         "Team Collaboration",

@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Aksh Agrawal - AI Developer & Interactive Experiences",
   description:
-    "Portfolio of Aksh Agrawal, B.Tech Computer Science student at CSVTU UTD Bhilai. Specializing in AI-driven applications and interactive experiences.",
+    "Portfolio of Aksh Agrawal, B.Tech (Hons.) Computer Science (DS) student at CSVTU UTD Bhilai. Specializing in AI-driven applications and interactive experiences.",
 };
 
 export default function RootLayout({
